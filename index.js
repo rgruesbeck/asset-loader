@@ -1,6 +1,4 @@
 /**
- * game/helpers/assetLoaders.js
- * 
  * What it Does:
  *   This file contains loaders for images, sounds, and fonts.
  *   and a loadList function that lets you load any of these in a list.
@@ -92,15 +90,24 @@ const loadList = (list, progress) => {
 }
 
 */
+
 const loadImage = (key, url, opts) => {
-    let fallback = opts && opts.optional ?
-        createBase64Image(blankImage) :
-        createBase64Image(defaultImage);
+    return new Promise((resolve, reject) => {
+        let optional = opts && opts.optional
 
-    let result = { type: 'image', key: key, value: fallback };
-    if (!key || !url) { return result; }
+        // reject with error for missing key or url
+        if (!key) { reject(new Error('key required')) }
+        if (!url && !optional) { reject(new Error('url required')) }
 
-    return new Promise((resolve) => {
+        // get fallback image
+        // blank for optional images
+        // default image for invalid urls
+        let fallback = optional ?
+            createBase64Image(blankImage) :
+            createBase64Image(defaultImage);
+
+        let result = { type: 'image', key: key, value: fallback };
+
         let image = new Image;
         image.src = opts && opts.params ?
         `${url}?${opts.params}` :
