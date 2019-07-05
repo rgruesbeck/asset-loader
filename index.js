@@ -52,12 +52,12 @@
  *   
  */
 
-// import audioBufferLoader from 'audio-loader';
+import audioBufferLoader from 'audio-loader';
 import WebFont from 'webfontloader'
+
 import { createBase64Image } from './utils.js';
 import { blankImage, defaultImage } from './placeholders.js';
 
-/*
 const loadList = (list, progress) => {
     // calculate loading progress
     let i = 0;
@@ -89,29 +89,15 @@ const loadList = (list, progress) => {
         })
 }
 
-*/
-
-const loadImage = (key, url, opts) => {
+const loadImage = (key, url, opts = {}) => {
     return new Promise((resolve, reject) => {
-        let optional = opts && opts.optional
+        let { optional, params } = opts;
 
         // reject with error for missing key or url
         if (!key) { reject(new Error('key required')) }
-        if (!url && !optional) { reject(new Error('url required')) }
-
-        // get fallback image
-        // blank for optional images
-        // default image for invalid urls
-        let fallback = optional ?
-            createBase64Image(blankImage) :
-            createBase64Image(defaultImage);
-
-        let result = { type: 'image', key: key, value: fallback };
 
         let image = new Image;
-        image.src = opts && opts.params ?
-        `${url}?${opts.params}` :
-        url;
+        image.src = [url, params].filter(i => i).join('?')
 
         // loaded
         image.onload = () => {
@@ -120,79 +106,102 @@ const loadImage = (key, url, opts) => {
             image.decode()
             .then(() => {
                 resolve({
-                    ...result,
-                    ... { value: image }
+                    type: 'image',
+                    key: key,
+                    value: image
                 });
             })
             .catch((err) => {
+                // decode error
                 console.error(err);
-
                 resolve({
-                    ...result,
-                    ... { value: createBase64Image(defaultImage) }
+                    type: 'image',
+                    key: key,
+                    value: optional && url === '' ?
+                    createBase64Image(blankImage) :
+                    createBase64Image(defaultImage)
                 });
             })
         };
 
-        // error
-        image.onerror = () => {
+        // load error
+        image.onerror = (err) => {
+            if (!optional) {
+                console.error(err);
+            }
+
             resolve({
-                ...result,
-                ... { value: createBase64Image(defaultImage) }
+                type: 'image',
+                key: key,
+                value: optional && url === '' ?
+                createBase64Image(blankImage) :
+                createBase64Image(defaultImage)
             });
         };
     });
 
 }
 
-/*
 const loadSound = (key, url) => {
     let result = { type: 'sound', key: key, value: null };
 
-    // check
-    if (!key || !url) { return result; }
-
     return new Promise((resolve, reject) => {
+        // reject with error for missing key or url
+        if (!key) { reject(new Error('key required')) }
+
         audioBufferLoader(url)
             .then((sound) => {
-                resolve({...result, ... { value: sound } });
+                resolve({
+                    type: 'sound',
+                    key: key,
+                    value: sound
+                });
             })
             .catch((err) => {
-                reject(err);
+                // log an error and resolve a silent audio buffer
+                console.error('loadSound', err)
+                resolve({
+                    type: 'sound',
+                    key: key,
+                    value: new AudioBuffer({ length: 1, numberOfChannels: 1, sampleRate: 8000 })
+                })
             })
     });
 }
-*/
 
-const loadFont = (key, fontName, opts) => {
-    return new Promise((resolve) => {
-        if (!key) {
-            throw new Error('key required')
-        }
+const loadFont = (key, fontName, opts = {}) => {
+    return new Promise((resolve, reject) => {
+        let { fallback } = opts;
 
-        if (!fontName) {
-            throw new Error('fontName required')
-        }
+        // reject with error for missing key or url
+        if (!key) { reject(new Error('key required')) }
 
-        let res = {
+        if (!fontName) { resolve({
             type: 'font',
             key: key,
-            value: opts && opts.fallback || 'Arial'
-        }
+            value: fallback || 'Arial'
+        })}
 
         WebFont.load({
             google: {
                 families: [fontName]
             },
             fontactive: familyName => {
-                resolve({...res, ...{ value: familyName }});
+                resolve({
+                    type: 'font',
+                    key: key,
+                    value: familyName
+                });
             },
             fontinactive: () => {
-                resolve(res);
+                resolve({
+                    type: 'font',
+                    key: key,
+                    value: fallback || 'Arial'
+                });
             }
         });
     });
 }
 
-// export { loadList, loadImage, loadSound, loadFont };
-export { loadImage, loadFont };
+export { loadList, loadImage, loadSound, loadFont };
