@@ -1,5 +1,5 @@
 {
-  "name": "asset-loader",
+  "name": "game-asset-loader",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
