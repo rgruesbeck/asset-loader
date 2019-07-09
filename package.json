@@ -1,13 +1,17 @@
 {
   "name": "game-asset-loader",
   "version": "0.0.2",
-  "description": "",
+  "description": "An asset loader with graceful fallbacks, for use in browser games",
   "main": "index.js",
   "scripts": {
     "start": "npx parcel test/test.html"
   },
   "author": "",
   "license": "ISC",
+  "keywords": [
+    "games",
+    "loader"
+  ],
   "dependencies": {
     "audio-loader": "^1.0.3",
     "webfontloader": "^1.6.28"

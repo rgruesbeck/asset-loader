@@ -35,3 +35,6 @@ npm install --save game-asset-loader
 ```
 ## Develop
 Run ```npm start``` and open localhost:1234
+
+## Change Log
+- 0.0.2 add flag for browsers not supporting image.decode
