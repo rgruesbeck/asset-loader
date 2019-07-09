@@ -103,25 +103,33 @@ const loadImage = (key, url, opts = {}) => {
         image.onload = () => {
             // pre-decode so decoding will not block main thread
             // especially for large background images
-            image.decode()
-            .then(() => {
+            if (image.decode) {
+                image.decode()
+                .then(() => {
+                    resolve({
+                        type: 'image',
+                        key: key,
+                        value: image
+                    });
+                })
+                .catch((err) => {
+                    // decode error
+                    console.error(err);
+                    resolve({
+                        type: 'image',
+                        key: key,
+                        value: optional && url === '' ?
+                        createBase64Image(blankImage) :
+                        createBase64Image(defaultImage)
+                    });
+                });
+            } else {
                 resolve({
                     type: 'image',
                     key: key,
                     value: image
                 });
-            })
-            .catch((err) => {
-                // decode error
-                console.error(err);
-                resolve({
-                    type: 'image',
-                    key: key,
-                    value: optional && url === '' ?
-                    createBase64Image(blankImage) :
-                    createBase64Image(defaultImage)
-                });
-            })
+            }
         };
 
         // load error
