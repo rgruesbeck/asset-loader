@@ -13,6 +13,7 @@
     "loader"
   ],
   "dependencies": {
+    "audio-context": "^1.0.3",
     "audio-loader": "^1.0.3",
     "webfontloader": "^1.6.28"
   },

@@ -14,7 +14,6 @@ npm install --save game-asset-loader
     })
 ```
 ### Load a sound
-returns an audio buffer
 ```js
     loadSound('mySound', 'mySoundURL')
     .then(sound => {
@@ -22,7 +21,6 @@ returns an audio buffer
     })
 ```
 ### Load a font
-loads a google font
 ```js
     loadFont('myFont', 'GoogleFontName')
     .then(font => {
@@ -48,13 +46,15 @@ loads a google font
 ```
 ## Fallbacks
 Images (optional): transparent image placeholder (game code can remain unchanged)
+
 Images (required): image not found image (visual feedback that an image is missing)
+
 Sound: silent sound & console error
 
 ## Develop
 Run ```npm start``` and open localhost:1234 in a browser.
-[tape](https://github.com/substack/tape) + [tape-dom](https://github.com/gritzko/tape-dom) are used for easy testing on various mobile devices.
 
+[tape](https://github.com/substack/tape) + [tape-dom](https://github.com/gritzko/tape-dom) are used for easy testing on various mobile devices.
 
 ## Change Log
 - 0.0.3 fix audio buffer fallback for safari
