@@ -17,7 +17,7 @@ returns an audio buffer
 ```js
     loadSound('mySound', 'mySoundURL')
     .then(sound => {
-        // loaded sound object { type: 'image', key: 'myImage', value: audioBuffer }
+        // loaded sound object { type: 'sound', key: 'mySound', value: audioBuffer }
     })
 ```
 ### Load a font
@@ -25,7 +25,7 @@ loads a google font
 ```js
     loadFont('myFont', 'GoogleFontName')
     .then(font => {
-        // loaded sound object { type: 'image', key: 'myImage', value: audioBuffer }
+        // loaded sound object { type: 'font', key: 'myFont', value: fontFamilyName }
     })
 ```
 ### Load List
