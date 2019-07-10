@@ -2,6 +2,7 @@ import test from 'tape'
 import domReporter from 'tape-dom'
 domReporter(test) // setup DOM reporter
 
+import audioContext from 'audio-context';
 import { loadImage, loadSound, loadFont } from  '../index.js'
 import { createBase64Image } from '../utils.js';
 import { blankImage, defaultImage } from '../placeholders.js';
@@ -91,10 +92,10 @@ test('image loader', (t) => {
 
 // test sound loader
 test('sound loader', (t) => {
-    t.plan(14)
+    t.plan(19)
     
     // setup  image
-    const audioCtx = new AudioContext()
+    const audioCtx = audioContext()
 
     const key = `imageKey!${rand()}`
     const url = `https://objects.koji-cdn.com/e5d1d25b-29a1-4df7-b9b7-534ae82f7bc2/buttonHeroSuccess2.mp3`
@@ -136,14 +137,25 @@ test('sound loader', (t) => {
         t.ok(actual.value.numberOfChannels, 'value has numberOfChannels')
     })
 
-    // invalid urls resolve with a silent sound
+    // blank urls resolve with a silent sound
     loadSound(key, '').then(actual => {
+        // should be silent buffer
+        t.comment('blank urls resolve with silent audio buffer')
+        t.equal(actual.value.length, 1, 'value has length 1')
+        t.ok(actual.value.duration < 0.0002, 'value has duration < 0.0002')
+        t.equal(actual.value.sampleRate, 22050, 'value has sampleRate 22050')
+        t.equal(actual.value.sampleRate, 22050, 'value has sampleRate 22050')
+        t.equal(actual.value.numberOfChannels, 1, 'value has numberOfChannels 1')
+    })
+
+    // invalid urls resolve with a silent sound
+    loadSound(key, url.replace('.mp3', 'mp3')).then(actual => {
         // should be silent buffer
         t.comment('invalid urls resolve with silent audio buffer')
         t.equal(actual.value.length, 1, 'value has length 1')
-        t.equal(actual.value.duration, 0.000125, 'value has duration 0.000125')
-        t.equal(actual.value.sampleRate, 8000, 'value has sampleRate 8000')
-        t.equal(actual.value.sampleRate, 8000, 'value has sampleRate 8000')
+        t.ok(actual.value.duration < 0.0002, 'value has duration < 0.0002')
+        t.equal(actual.value.sampleRate, 22050, 'value has sampleRate 22050')
+        t.equal(actual.value.sampleRate, 22050, 'value has sampleRate 22050')
         t.equal(actual.value.numberOfChannels, 1, 'value has numberOfChannels 1')
     })
 

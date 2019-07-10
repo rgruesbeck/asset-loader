@@ -52,6 +52,7 @@
  *   
  */
 
+import audioContext from 'audio-context';
 import audioBufferLoader from 'audio-loader';
 import WebFont from 'webfontloader'
 
@@ -167,12 +168,18 @@ const loadSound = (key, url) => {
             })
             .catch((err) => {
                 // log an error and resolve a silent audio buffer
+                // previously created with new AudioBuffer (unsupported on safari)
+                // note: sampleRate must also be 22050 to work on safari
+                // value: new AudioBuffer({ length: 1, numberOfChannels: 1, sampleRate: 8000 })
                 console.error('loadSound', err)
+
+                const audioCtx = audioContext()
                 resolve({
                     type: 'sound',
                     key: key,
-                    value: new AudioBuffer({ length: 1, numberOfChannels: 1, sampleRate: 8000 })
+                    value: audioCtx.createBuffer(1, 1, 22050)
                 })
+                
             })
     });
 }
