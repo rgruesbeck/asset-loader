@@ -1,5 +1,6 @@
 # Game Asset Loader
-Game asset loader for HTML5 games.
+Game asset loader for HTML5 games with gracefull fallbacks.
+
 ## Install
 ```sh
 npm install --save game-asset-loader
