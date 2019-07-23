@@ -6,12 +6,17 @@
   "scripts": {
     "start": "npx parcel test/test.html"
   },
-  "author": "",
-  "license": "ISC",
   "keywords": [
     "games",
+    "assets",
     "loader"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgruesbeck/unlock-audio-context.git"
+  },
+  "author": "Ron Gruesbeck",
+  "license": "ISC",
   "dependencies": {
     "audio-context": "^1.0.3",
     "audio-loader": "^1.0.3",
