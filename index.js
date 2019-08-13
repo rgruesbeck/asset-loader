@@ -63,8 +63,8 @@ const loadList = (list, progress) => {
     // calculate loading progress
     let i = 0;
     progress({ percent: 0, loaded: null });
-    for (const prm of list) {
-        prm.then((asset) => {
+    for (let i = 0; i < list.length; i += 1) {
+        list[i].then((asset) => {
             i++;
             progress({
                 percent: Math.floor(i * 100 / list.length),
