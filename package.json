@@ -1,6 +1,6 @@
 {
   "name": "game-asset-loader",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "An asset loader with graceful fallbacks, for use in browser games",
   "main": "index.js",
   "scripts": {
