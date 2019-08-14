@@ -67,7 +67,7 @@ const loadImage = (key, url, opts = {}) => {
                 })
                 .catch((err) => {
                     // decode error
-                    console.error(`Error: could not pre-decode image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
+                    console.warn(`Warning: could not pre-decode image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
                     resolve({
                         type: 'image',
                         key: key,
@@ -88,7 +88,7 @@ const loadImage = (key, url, opts = {}) => {
         // load error
         image.onerror = (err) => {
             if (!optional) {
-                console.error(`Error: could not load image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
+                console.warn(`Warning: could not load image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
             }
 
             resolve({
@@ -119,11 +119,11 @@ const loadSound = (key, url) => {
                 });
             })
             .catch((err) => {
-                // log an error and resolve a silent audio buffer
+                // log an warning and resolve a silent audio buffer
                 // previously created with new AudioBuffer (unsupported on safari)
                 // note: sampleRate must also be 22050 to work on safari
                 // value: new AudioBuffer({ length: 1, numberOfChannels: 1, sampleRate: 8000 })
-                console.error(`Error: could not load sound '${key}' from '${url}'.`, err, `resolving with fallback`);
+                console.warn(`Warning: could not load sound '${key}' from '${url}'.`, err, `resolving with fallback`);
 
                 const audioCtx = audioContext()
                 resolve({

@@ -49,14 +49,9 @@ Images (optional): transparent image placeholder (game code can remain unchanged
 
 Images (required): image not found image (visual feedback that an image is missing)
 
-Sound: silent sound & console error
+Sound: silent sound & console warning
 
 ## Develop
 Run ```npm start``` and open localhost:1234 in a browser.
 
 [tape](https://github.com/substack/tape) + [tape-dom](https://github.com/gritzko/tape-dom) are used for easy testing on various mobile devices.
-
-## Change Log
-- 0.0.3 fix audio buffer fallback for safari
-- 0.0.2 add flag for browsers not supporting image.decode
-- 0.0.1 initial version
