@@ -1,55 +1,7 @@
 /**
- * What it Does:
- *   This file contains loaders for images, sounds, and fonts.
- *   and a loadList function that lets you load any of these in a list.
  * 
- *   loadList: takes a list of assets loaders (loadImage, loadSound, or loadFont)
- *   and returns a list of object containing { type, key, value }
- *   where value is the loaded asset only after all the assets have loaded
- *   
- *   loadImage: takes a key and a url and returns an object containing
- *   { type: 'image', key: '<key>', value: '<the loaded image>' }
+ *   Asset loading functions
  * 
- *   loadSound: takes a key and a url and returns an object containing
- *   { type: 'sound', key: '<key>', value: '<the loaded sound>' }
- * 
- *   loadFont: takes a key and a google fontName and returns an object containing
- *   { type: 'font', key: '<key>', value: '<the loaded font>' }
- *   
- * What to Change:
- *   
- *   
- * How to Use it:
- * 
- *   loadList: input an array of loaders and pass a function to handle the the loaded assets
- *   eg. loadList(<list of loaders>).then(<function handle loaded assets>)
- * 
- *     loadList([
- *       loadImage('image_key', 'image_url'),
- *       loadSound('sound_key', 'sound_url'),
- *       loadFont('font_key', 'font_name')
- *     ]).then((loadedAssets) => {
- *       // attach loaded assets
- *     })
- *   
- *   loadImage: 
- *       loadImage('image_key', 'image_url')
- *         .then((loadedImage) => {
- *            // attach loaded image
- *         }) 
- * 
- *   loadSound: 
- *       loadSound('sound_key', 'sound_url')
- *         .then((loadedSound) => {
- *            // attach loaded sound
- *         }) 
- * 
- *   loadFont: 
- *       loadFont('font_key', 'font_name')
- *         .then((loadedFont) => {
- *            // attach loaded font
- *         }) 
- *   
  */
 
 import audioContext from 'audio-context';
@@ -115,7 +67,7 @@ const loadImage = (key, url, opts = {}) => {
                 })
                 .catch((err) => {
                     // decode error
-                    console.error(err);
+                    console.error(`Error: could not pre-decode image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
                     resolve({
                         type: 'image',
                         key: key,
@@ -136,7 +88,7 @@ const loadImage = (key, url, opts = {}) => {
         // load error
         image.onerror = (err) => {
             if (!optional) {
-                console.error(err);
+                console.error(`Error: could not load image '${key}' from '${url}'.`, err.path, `resolving with fallback`);
             }
 
             resolve({
@@ -171,7 +123,7 @@ const loadSound = (key, url) => {
                 // previously created with new AudioBuffer (unsupported on safari)
                 // note: sampleRate must also be 22050 to work on safari
                 // value: new AudioBuffer({ length: 1, numberOfChannels: 1, sampleRate: 8000 })
-                console.error('loadSound', err)
+                console.error(`Error: could not load sound '${key}' from '${url}'.`, err, `resolving with fallback`);
 
                 const audioCtx = audioContext()
                 resolve({

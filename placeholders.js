@@ -1,16 +1,9 @@
 /**
- * game/helpers/placeholders.js
- * 
- * What it Does:
  *   This file contains data uris for use as fallbacks
  * 
  *   blankImage: used as an invisible image for optional images, avoids safari restrictions
  *   
  *   defaultImage: placeholder image for unloaded images
- * 
- * What to Change:
- *   
- * How to Use it:
  */
 
 

@@ -97,7 +97,7 @@ test('sound loader', (t) => {
     // setup  image
     const audioCtx = audioContext()
 
-    const key = `imageKey!${rand()}`
+    const key = `soundKey!${rand()}`
     const url = `https://objects.koji-cdn.com/e5d1d25b-29a1-4df7-b9b7-534ae82f7bc2/buttonHeroSuccess2.mp3`
     let audioBuffer = audioCtx.createBuffer(1, 1, 22050)
 
