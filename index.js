@@ -50,6 +50,7 @@ const loadImage = (key, url, opts = {}) => {
         if (!key) { reject(new Error('key required')) }
 
         let image = new Image;
+        image.crossOrigin = "Anonymous";
         image.src = [url, params].filter(i => i).join('?')
 
         // loaded
