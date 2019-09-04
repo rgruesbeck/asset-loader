@@ -7,13 +7,17 @@
     "start": "npx parcel test/test.html"
   },
   "keywords": [
-    "games",
-    "assets",
+    "game",
+    "asset",
+    "image",
+    "sound",
+    "font",
+    "fallback",
     "loader"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rgruesbeck/unlock-audio-context.git"
+    "url": "git+https://github.com/rgruesbeck/game-asset-loader.git"
   },
   "author": "Ron Gruesbeck",
   "license": "ISC",
